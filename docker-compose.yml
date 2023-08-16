@@ -1,0 +1,27 @@
+version: '3.10.7'
+
+services:
+  # Nombre del servicio
+  web:
+    container_name: django_tutorias
+    build: 
+      context: .
+      dockerfile: dockerfile
+    # Puerto que se expone hacia el sistema anfitrión 
+    # desde el contenedor
+    ports:
+      - '80:80'
+    volumes:
+      - .:/app
+    depends_on:
+      - sqlite3
+ 
+  sqlite3:
+    image: nouchka/sqlite3:latest
+    stdin_open: true
+    tty: true
+    volumes:
+      - "./db/:/root/db"
+    
+    
+    

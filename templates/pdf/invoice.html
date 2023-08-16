@@ -1,0 +1,41 @@
+
+{% block content %}
+<h2 class="text-center">UNIVERSIDAD NACIONAL DE LOJA</h2>
+<h2 class="text-center">COMISION  DE ARTICULACION DE LAS FUNCIONES SUSTANTIVAS</h2>
+<h2 class="text-center">FORMATO PARA EL REGISTRO DE LAS ACTIVIDADES DE TUTORÍA ACADÉMICA</h2>
+
+<h4>Facultad:</h4>
+<h4>Carrera:</h4>
+<h4>Asignatura:</h4>
+<h4>Profesor:</h4>
+<h4>Periodo academico:</h4>
+
+<table>
+    <thead style="background-color: blue;">
+        <tr>
+            <th class="text-center">Fecha</th>
+            <th class="text-center">Tema Tratado</th>
+            <th class="text-center">Profesor</th>
+            <th class="text-center">Estado</th>
+            <th class="text-center">Tiempo Empleado</th>
+            <th class="text-center">Modalidad</th>
+            <th class="text-center">Firma</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tutoria in tutorias %}
+        <tr>
+            <td class="text-center">{{tutoria.date}}</td>
+            <td class="text-center">{{tutoria.description}}</td>
+            <td class="text-center">{{tutoria.teacher}}</td>
+            <td class="text-center">{{tutoria.status}}</td>
+            <td class="text-center">{{tutoria.time_quantity}}</td>
+            <td class="text-center">{{tutoria.modalidad}}</td>
+            <td class="text-center">{{tutoria.firma}}</td>
+        </tr>
+        {% empty %}
+        <h6>No hay solicitues de tutorias</h6>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

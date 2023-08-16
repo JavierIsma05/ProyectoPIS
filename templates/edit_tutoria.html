@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+<div class="container my-4">
+    <h2>Editar Tutoria</h2>
+
+    <!-- seccion de mensajes-->
+    {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="card mx-auto my-5" style="width: 40rem;">
+            <div class="card-body">
+                <h5 class="card-title text-center">Modificar los campos</h5>
+                {{ form |crispy }}
+                <a class="card-link" href="{% url 'home' %}">Inicio</a>
+                <a class="card-link" href="{% url 'tutorias' %}">Tutorias</a>
+                <button class="btn btn-primary float-end" type="submit">Guardar Cambios</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+{% endblock %}

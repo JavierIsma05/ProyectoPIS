@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+
+
+
+<div class="container mt-3">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Registro de Usuarios</h3>
+                </div>
+                <div class="card-body">
+                    <form class="" action="" method="post">
+                        {% csrf_token %}
+                        <h5 class="card-title text-center">Complete todos los datos</h5>
+                        {{ form | crispy }}
+                        <!--
+                        <div class="form-group">
+                            <label for="id_username">Nombre de usuario: </label>
+                            <input class="form-control" type="text" name="username" maxlength="150" autofocus required
+                                id="id_username">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_email">Correo electrónico: </label>
+                            <input class="form-control" type="email" name="email" required id="id_email">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_password1">Contraseña:</label>
+                            <input class="form-control" type="password" name="password1" required id="id_password1">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_password2">Confirma Contraseña:</label>
+                            <input class="form-control" type="password" name="password2" required id="id_password2">
+                        </div>
+                        -->
+                        <a class="card-link" href="{% url 'home' %}">Inicio</a>
+                        <a class="card-link" href="{% url 'login' %}">Iniciar Sesion</a>
+                        <button type="submit" class="btn btn-sm btn-primary">Registrarse</button>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div></div></div>
+{% endblock %}

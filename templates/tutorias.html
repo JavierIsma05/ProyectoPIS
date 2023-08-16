@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="row">
+        <div class="col">
+            <h2>Tutorias</h2>
+        </div>
+        <div class="col">
+            <span class="float-end">
+                {% if group_name == 'estudiantes' %}
+                <a href="{% url 'tutorias_create' %}" class="btn btn-success">Solicitar Tutoria</a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+    <hr>
+
+    <!-- seccion de mensajes-->
+    {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <!--
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 my-4">
+            {% for tutoria in tutorias %}
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ tutoria.date }}</h5>
+                        <p class="card-text">{{ tutoria.description }}</p>
+                        <p class="card-text"><strong>Profesor: </strong>{{ tutoria.teacher.first_name }} {{ tutoria.teacher.last_name }}</p>
+                        {% if group_name == 'profesores' and not tutoria.is_enrolled %}
+                            <a class="btn btn-sm btn-success" href="">Aceptar</a>
+                            <a class="btn btn-sm btn-danger" href="">Cancelar</a>
+                        {% endif %}
+                        {% if group_name == 'estudiantes' and not tutoria.is_enrolled %}
+                            <a class="btn btn-sm btn-warning" href="{% url 'tutorias_edit' tutoria.id %}">Editar</a>
+                        {% elif tutoria.is_enrolled %}
+                            <a class="btn btn-sm brtn-warning" href="{% url 'profile' %}">Ir al perfil</a>
+                        
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+                
+            {% endfor %}-->
+    <!-- AQUI EMPIEZA LA TABLA -->
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+            <div class="card ">
+                <div class="card-body">
+                    {% if group_name == 'estudiantes' %}
+                    {% include 'profile/students.html' %}
+                    {% elif group_name == 'profesores' %}
+                    {% include 'profile/profesor.html' %}
+                    {% elif group_name == 'decanos' %}
+                    {% include 'profile/decano.html' %}
+                    {% elif group_name == 'administrativos' %}
+                    {% include 'profile/admin.html' %}
+                    {% endif %}
+                    <a href="{% url 'generate_pdf' %}" target="_blank">Generar PDF</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
+            <div class="card ">
+                <div class="card-body">
+                    <div class="table-responsive py-2">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Fecha</th>
+                                    <th class="text-center">Tema Tratado</th>
+                                    {% if group_name == 'estudiantes' %}
+                                    <th class="text-center">Profesor</th>
+                                    {% endif %}
+                                    
+
+                                    <th class="text-center">Estado</th>
+                                    
+                                    <th class="text-center">Tiempo Empleado</th>
+                                    <th class="text-center">Modalidad</th>
+                                    <th class="text-center">Firma</th>
+                                    <th colspan="2">Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for tutoria in tutorias %}
+                                <tr>
+                                    <td class="text-center">{{tutoria.date}}</td>
+                                    <td class="text-center">{{tutoria.description}}</td>
+                                {% if group_name == 'estudiantes' %}
+                                    <td class="text-center">{{tutoria.teacher}}</td>
+                                {% endif %}
+                                    <td class="text-center">{{tutoria.status}}</td>
+                                    <td class="text-center">{{tutoria.time_quantity}}</td>
+                                    <td class="text-center">{{tutoria.modalidad}}</td>
+                                    <td class="text-center">{{tutoria.firma}}</td>
+    
+                                {% if group_name == 'profesores' %}
+                                    {% if tutoria.status == 'pendiente' %}
+                                    <td><a class="btn btn-sm btn-success" href="{% url 'accept_tutoring_request' tutoria.id %}">Aceptar</a></td>
+                                    <td><a class="btn btn-sm btn-danger" href="{% url 'deny_tutoring_request' tutoria.id %}">Cancelar</a></td>
+                                    {% else %}
+                                    <td><a class="btn btn-sm btn-warning text-center" href="{% url 'tutorias_edit' tutoria.id %}">Editar</a></td>
+                                    {% endif %}
+                                {% endif %}
+                                   
+
+                                </tr>
+                                {% empty %}
+                                <h5>No exite tutorias solicitadas</h5>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--AQUI TERMINA LA TABLA -->
+</div>
+</div>
+
+
+
+{% endblock %}
