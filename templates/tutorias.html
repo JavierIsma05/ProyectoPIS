@@ -88,7 +88,9 @@
                                     <th class="text-center">Tiempo Empleado</th>
                                     <th class="text-center">Modalidad</th>
                                     <th class="text-center">Firma</th>
+                                    {% if not group_name == 'administrativos' %}
                                     <th colspan="2">Opciones</th>
+                                    {% endif %}
                                 </tr>
                             </thead>
                             <tbody>
@@ -102,7 +104,10 @@
                                     <td class="text-center">{{tutoria.status}}</td>
                                     <td class="text-center">{{tutoria.time_quantity}}</td>
                                     <td class="text-center">{{tutoria.modalidad}}</td>
-                                    <td class="text-center">{{tutoria.firma}}</td>
+                                    <td >
+                                        <img class="img-thumbnail rounded-circle mb-3" src="{{ tutoria.firma.url }}"
+                        alt="{{ tutoria.firma }}" style="width: 50px;">
+                                    </td>
     
                                 {% if group_name == 'profesores' %}
                                     {% if tutoria.status == 'pendiente' %}

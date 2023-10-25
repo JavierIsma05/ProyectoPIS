@@ -26,7 +26,7 @@ urlpatterns = [
     path('error/',login_required(ErrorView.as_view()),name='error'),
 
     # Imprimir datos
-    path('tutorias/invoice/pdf/<int:pk>/',TutoriaInvoicePdfView.as_view(),name='tutorias_invoice'),
+    #path('tutorias/invoice/pdf/<int:pk>/',TutoriaInvoicePdfView.as_view(),name='tutorias_invoice'),
     path('tutorias/aceptar/<int:request_id>/', accept_tutoring_request, name='accept_tutoring_request'),
     path('tutorias/cancelar/<int:request_id>/', deny_tutoring_request, name='deny_tutoring_request'),
 

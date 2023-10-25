@@ -22,6 +22,9 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.contrib.staticfiles import finders
+from io import BytesIO
+from urllib.request import urlopen  # Importa urlopen desde urllib.request
+
 
 def plural_to_singular(plural):
     #Diccionario de palabras
@@ -203,22 +206,38 @@ class TutoriaEditarView(UserPassesTestMixin, UpdateView):
         messages.error(self.request, 'Ha ocurrido un error al actualizar el registro')
         return self.render_to_response(self.get_context_data(form=form))
     
-class TutoriaInvoicePdfView(View):
+def fetch_resources(uri, rel):
+    # Función de callback para cargar recursos como imágenes
+    if uri.startswith("/media/firmas/"):  # Reemplaza esto con la ruta correcta
+        path = uri.replace("/media/firmas/", "")  # Ajusta la ruta según tu estructura de archivos
+        return path
+    return uri
 
-    def get(self, request, *args, **kwargs):
-        template = get_template('pdf/invoice.html')
-        context = {'title': 'UNIVERSIDAD NACIONA DE LOJA'}
-        html = template.render(context)
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="registroacademico.pdf"'
-         # create a pdf
-        pisa_status = pisa.CreatePDF(
-        html, dest=response)
+def generate_pdf(request):
+    template = get_template('pdf/invoice.html')
+    context = {
+        'tutorias': Tutoria.objects.all(),
+        'profile' : User.objects.all()
 
-        # if error then show some funny view
-        if pisa_status.err:
-            return HttpResponse('We had some errors <pre>' + html + '</pre>')            
-        return response
+    }
+    
+    html = template.render(context)
+    response = HttpResponse(content_type='application/pdf')
+    #response['Content-Disposition'] = 'attachment; filename="registroacademico.pdf"'
+    # Configura la ruta de imágenes (PYTHON_HTML2PDF_IMAGES)
+    pdf_options = {
+        "images": True,
+    }
+    pisa_status = pisa.CreatePDF(html, dest=response, link_callback=fetch_resources, **pdf_options)
+
+     # create a pdf
+    #pisa_status = pisa.CreatePDF(
+    #    html, dest=response)
+
+    if pisa_status.err:
+        return HttpResponse('Error al generar PDF', content_type='text/plain')           
+    return response
+    
 
 def accept_tutoring_request(request, request_id):
     if request.user.groups.filter(name='profesores').exists():
@@ -233,19 +252,3 @@ def deny_tutoring_request(request, request_id):
         tutoring_request.status = 'cancelada'
         tutoring_request.save()
     return redirect('tutorias')
-
-def generate_pdf(request):
-        template = get_template('pdf/invoice.html')
-        context = {'tutorias': Tutoria.objects.all()} 
-        html = template.render(context)
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="registroacademico.pdf"'
-         # create a pdf
-        pisa_status = pisa.CreatePDF(
-        html, dest=response)
-
-        # if error then show some funny view
-        if pisa_status.err:
-            return HttpResponse('Error al generar PDF', content_type='text/plain')           
-        return response
-    

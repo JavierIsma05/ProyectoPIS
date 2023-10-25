@@ -1,37 +1,89 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documento a imprimir</title>
+    <style>
+        /* Estilos para la tabla */
+        table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+      
+        th, td {
+          padding: 10px;
+          border: 1px solid #000;
+          text-align: left;
+          text-align: center;
+        }
+      
+        th {
+          background-color: #1e4ad9;
+          color: white;
+        }
+      
+        tbody tr:hover {
+          background-color: #f5f5f5;
+        }
+      
+        /* Estilos para el encabezado */
+        thead {
+          font-weight: bold;
+        }
+      
+        /* Estilos para el cuerpo de la tabla */
+        tbody {
+          font-weight: normal;
+        }
+      </style>
+</head>
+<body>
+    
 {% block content %}
-<h2 class="text-center">UNIVERSIDAD NACIONAL DE LOJA</h2>
-<h2 class="text-center">COMISION  DE ARTICULACION DE LAS FUNCIONES SUSTANTIVAS</h2>
-<h2 class="text-center">FORMATO PARA EL REGISTRO DE LAS ACTIVIDADES DE TUTORÍA ACADÉMICA</h2>
+<h2 style="text-align: center;">UNIVERSIDAD NACIONAL DE LOJA</h2>
+<h2 style="text-align: center;">COMISION  DE ARTICULACION DE LAS FUNCIONES SUSTANTIVAS</h2>
+<h2 style="text-align: center;">FORMATO PARA EL REGISTRO DE LAS ACTIVIDADES DE TUTORÍA ACADÉMICA</h2>
+<!--TITULOS-->
 
-<h4>Facultad:</h4>
-<h4>Carrera:</h4>
-<h4>Asignatura:</h4>
-<h4>Profesor:</h4>
-<h4>Periodo academico:</h4>
+<h4>Facultad: <span class="span-highlight">Facultad de la Energía las industrias y los Recursos no Renovables</span> .</h4>
+<h4>Carrera: <span class="span-highlight">Computación</span></h4>
+<h4>Asignatura: <span class="span-highlight"></span> .</h4>
+
+{% if user.is_authenticated %}
+<h2>{{ user.first_name }} {{ user.last_name }}</h2>
+{% endif %}
+<h4>Periodo academico: <span class="span-highlight">Abril 2023 - Septiembre 2023</span> .</h4>
+
+
+
 
 <table>
-    <thead style="background-color: blue;">
+    <thead>
         <tr>
-            <th class="text-center">Fecha</th>
-            <th class="text-center">Tema Tratado</th>
-            <th class="text-center">Profesor</th>
-            <th class="text-center">Estado</th>
-            <th class="text-center">Tiempo Empleado</th>
-            <th class="text-center">Modalidad</th>
-            <th class="text-center">Firma</th>
+            <th>Nro.</th>
+            <th>Fecha</th>
+            <th>Tiempo Empleado</th>
+            <th>Justificación de la Tutoría</th>
+            <th>Estudiante</th>
+            <th>Tema Tratado</th>
+            <th>Modalidad</th>
+            <th>Firma del estudiante</th>
         </tr>
     </thead>
     <tbody>
         {% for tutoria in tutorias %}
         <tr>
-            <td class="text-center">{{tutoria.date}}</td>
-            <td class="text-center">{{tutoria.description}}</td>
-            <td class="text-center">{{tutoria.teacher}}</td>
-            <td class="text-center">{{tutoria.status}}</td>
-            <td class="text-center">{{tutoria.time_quantity}}</td>
-            <td class="text-center">{{tutoria.modalidad}}</td>
-            <td class="text-center">{{tutoria.firma}}</td>
+            <td></td>
+            <td>{{tutoria.date}}</td>
+            <td>{{tutoria.time_quantity}} min</td>
+            <td>------</td>
+            <td>{{tutoria.teacher}}</td>
+            <td>{{tutoria.description}}</td>
+            <td>{{tutoria.modalidad}}</td>
+            <td>{{tutoria.firma.url}}</td>
+            <td><img class="img-thumbnail rounded-circle mb-3" src="{{ tutoria.firma }}"
+              alt="{{ tutoria.firma }}" style="width: 50px;"></td>
         </tr>
         {% empty %}
         <h6>No hay solicitues de tutorias</h6>
@@ -39,3 +91,7 @@
     </tbody>
 </table>
 {% endblock %}
+
+Firma ____________________
+</body>
+</html>

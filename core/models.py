@@ -13,7 +13,7 @@ class Tutoria(models.Model):
     status = models.CharField(choices=[('pendiente', 'Pendiente'), ('aceptada', 'Aceptada'), ('rechazada', 'Rechazada')], max_length=10, default='pending')
     time_quantity = models.PositiveIntegerField(default=0,verbose_name='Tiempo Empleado')
     modalidad = models.CharField(max_length=10,verbose_name='Modalidad',choices=modalidad, default='P')
-    firma = models.ImageField(default='default.png', upload_to='firmas/', blank=True, null=True)
+    firma = models.ImageField(default='default.png', upload_to='firmas/',verbose_name='Firma')
 
     def __str__(self):
         return str(self.date) 
